@@ -13,7 +13,7 @@ class CallTwitterApi
     private array $users = [];
 
     /**
-     * ユーザーリストを取得
+     *直近30ツイート内に10いいね以上あるユーザーリストを取得
      *
      * @param $tweetId
      * @return array
@@ -24,7 +24,11 @@ class CallTwitterApi
         foreach ($this->getReTweetUserIdList($tweetId) as $reTweetUserId) {
             if (!in_array($reTweetUserId, $this->users, true)) {
                 foreach ($this->getTweetsFromUserId($reTweetUserId) as $tweet) {
+                    Log::info("----いいね数----");
+                    Log::info($this->getTweetFavoriteFromId($tweet->id));
                     if ($this->getTweetFavoriteFromId($tweet->id) >= 10) {
+                        Log::info("----配列追加----");
+                        Log::info($reTweetUserId);
                         $this->users[] = $reTweetUserId;
                         break;
                     }
